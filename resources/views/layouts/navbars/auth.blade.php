@@ -4,7 +4,7 @@
       <a href="#" class="brand-link">
           <img src="{{ asset('images')}}/logo/no_logo.jpg " alt="No logo"
               class="brand-image img-circle elevation-3" style="opacity: .8">
-          <span class="brand-text font-weight-light">Barabaza</span>
+          <span class="brand-text font-weight-light">{{env('APP_TITLE','TITLE')}}</span>
       </a>
 
       <!-- Sidebar -->
@@ -53,6 +53,24 @@
                             </a>
                         </li>
                     @endif
+                    <li class="nav-item">
+                        <a href="{{ route('announcements') }}"
+                            class="nav-link {{ $elementActive == 'announcement' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-bullhorn"></i>
+                            <p>
+                                Announcement
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('price_monitorings') }}"
+                            class="nav-link {{ $elementActive == 'price_monitoring' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-money-bill-alt"></i>
+                            <p>
+                                Price Monitoring
+                            </p>
+                        </a>
+                    </li>
                   
                     @if (Auth::user()->can('user-list') || Auth::user()->can('role-list'))
                         <li class="nav-item {{ $elementActive == 'user' || $elementActive == 'roles' ? 'menu-open' : '' }}">
@@ -87,23 +105,63 @@
                         </li>
                     @endif
 
-                  <li class="nav-item d-none">
-                      <a href="#" class="nav-link">
-                          <i class="nav-icon fas fa-briefcase-medical"></i>
-                          <p>
-                              Medical Service
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="#" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Services</p>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
+                    <li class="d-none nav-item {{ $elementActive == 'user' || $elementActive == 'roles' ? 'menu-open' : '' }}">
+                        <a href="#"
+                            class="nav-link {{ $elementActive == 'user' || $elementActive == 'roles' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-store"></i>
+                            <p>
+                                Business Management
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @can('user-list')
+                            <li class="nav-item">
+                                <a href="{{ route('users') }}"
+                                    class="nav-link {{ $elementActive == 'user' ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Owner</p>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('role-list')
+                            <li class="nav-item">
+                                <a href="{{ route('roles') }}"
+                                    class="nav-link {{ $elementActive == 'roles' ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Store</p>
+                                </a>
+                            </li>
+                            @endcan
+                        </ul>
+                    </li>
+                    <li class="nav-item d-none">
+                        <a href="{{ route('announcements') }}"
+                            class="nav-link {{ $elementActive == 'assistance' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-tie"></i>
+                            <p>
+                                Assistance
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item d-none">
+                        <a href="{{ route('announcements') }}"
+                            class="nav-link {{ $elementActive == 'consumer_right' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-check"></i>
+                            <p>
+                                Consumer Rights
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item d-none">
+                        <a href="{{ route('announcements') }}"
+                            class="nav-link {{ $elementActive == 'filter_industry' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-filter"></i>
+                            <p>
+                                Filter Industry
+                            </p>
+                        </a>
+                    </li>
                   <li class="nav-item d-none">
                       <a href="#" class="nav-link">
                           <i class="nav-icon fas fa-people-carry"></i>

@@ -1,6 +1,6 @@
 @extends('layouts.app', [
 'class' => '',
-'elementActive' => 'user',
+'elementActive' => 'business_management',
 ])
 <style>
     .material-symbols-outlined {

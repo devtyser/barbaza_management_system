@@ -1,7 +1,9 @@
 @extends('layouts.app', [
 'class' => '',
-'elementActive' => 'user',
+'elementActive' => 'business_management',
 ])
+
+@section('content')
 <style>
     .material-symbols-outlined {
         font-variation-settings:
@@ -11,19 +13,17 @@
             'opsz'48
     }
 </style>
-
-@section('content')
 <div class="container-fluid mt--7">
     <div class="row">
         <div class="col-xl-12 order-xl-1">
-            <div class="card shadow">
+            <div class="card  shadow">
                 <div class="card-header bg-white border-0">
                     <div class="row align-items-center">
-                        <div class="col-8 edit-user-font">
+                        <div class="col-8 create-font">
                             <h3 class="mb-0">{{ __('User Management') }}</h3>
                         </div>
-                        <div class="col-4 text-right edit-user-btn">
-                            <a href="{{ route('user.index') }}" class="btn btn-sm btn-primary" id="edit-user-btn">{{
+                        <div class="col text-right add-user">
+                            <a href="{{ route('user.index') }}" class="btn btn-sm btn-primary" id="add-user">{{
                                 __('Back to list') }}</a>
                         </div>
                     </div>
@@ -49,18 +49,17 @@
                         </div>
                         @endif
                     </div>
-                    <form method="post" action="{{ route('user.update', $user) }}" autocomplete="off">
+                    <form method="post" action="{{ route('user.store') }}" autocomplete="off">
                         @csrf
-                        @method('put')
 
                         <h6 class="heading-small text-muted mb-4">{{ __('User information') }}</h6>
                         <div class="pl-lg-4">
                             <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
-                                <label class="form-control-label" for="input-name">{{ __('Name') }}</label>
-                                <input type="text" name="name" id="input-name"
+                                <label class="form-control-label" for="input-first-name">{{ __('Name') }}</label>
+                                <input type="text" name="name" id="input-first-name"
                                     class="form-control form-control-alternative{{ $errors->has('name') ? ' is-invalid' : '' }}"
-                                    placeholder="{{ __('First Name') }}" value="{{ old('name', $user->name) }}"
-                                    required autofocus>
+                                    placeholder="{{ __('First Name') }}" value="{{ old('name') }}" required
+                                    autofocus>
 
                                 @if ($errors->has('name'))
                                 <span class="invalid-feedback" role="alert">
@@ -68,12 +67,12 @@
                                 </span>
                                 @endif
                             </div>
+
                             <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="input-email">{{ __('Email') }}</label>
-                                <input type="email" readonly="readonly" name="email" id="input-email"
+                                <input type="email" name="email" id="input-email"
                                     class="form-control form-control-alternative{{ $errors->has('email') ? ' is-invalid' : '' }}"
-                                    placeholder="{{ __('Email') }}" value="{{ old('email', $user->email) }}"
-                                    required>
+                                    placeholder="{{ __('Email') }}" value="{{ old('email') }}" required>
 
                                 @if ($errors->has('email'))
                                 <span class="invalid-feedback" role="alert">
@@ -81,22 +80,21 @@
                                 </span>
                                 @endif
                             </div>
-
                             <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="input-password">{{ __('Password') }}</label>
                                 <input type="password" name="password" id="input-password"
-                                    class="form-control form-control-alternative{{ $errors->has('password') ? ' is-invalid' : '' }}"
-                                    placeholder="{{ __('Password') }}" value="">
-                                <div class="d-flex justify-content-end">
-                                    <div class="mx-3 view_password d-none"
+                                    class="input-password form-control form-control-alternative{{ $errors->has('password') ? ' is-invalid' : '' }}"
+                                    placeholder="{{ __('Password') }}" value="" required>
+                                <!-- <div class="d-flex justify-content-end">
+                                    <div class="mx-3 view_password"
                                         style="transform: translateY(-33px); width:23px;">
                                         <i id="visibilityBtnPassword">
-                                            <span id="iconPassword" class="material-symbols-outlined">
+                                            <span class="material-symbols-outlined">
                                                 visibility
                                             </span>
                                         </i>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 @if ($errors->has('password'))
                                 <span class="invalid-feedback" role="alert">
@@ -108,25 +106,25 @@
                                 <label class="form-control-label" for="input-password-confirmation">{{ __('Confirm
                                     Password') }}</label>
                                 <input type="password" name="password_confirmation" id="input-password-confirmation"
-                                    class="form-control form-control-alternative"
-                                    placeholder="{{ __('Confirm Password') }}" value="">
+                                    class="input-password-confirmation form-control form-control-alternative"
+                                    placeholder="{{ __('Confirm Password') }}" value="" required>
+                                <!-- <div class="d-flex justify-content-end d-none">
+                                    <div class="mx-3 view_password"
+                                        style="transform: translateY(-33px); width:23px;">
+                                        <i id="visibilityBtnConfirmPassword">
+                                            <span class="material-symbols-outlined">
+                                                visibility
+                                            </span>
+                                        </i>
+                                    </div>
+                                </div> -->
                             </div>
-                            <div class="d-flex justify-content-end d-none">
-                                <div class="mx-3 view_password d-none" style="transform: translateY(-41px); width:23px;">
-                                    <i id="visibilityBtnConfirmPassword">
-                                        <span id="iconConfirmPassword" class="material-symbols-outlined" id="icon">
-                                            visibility
-                                        </span>
-                                    </i>
-                                </div>
-                            </div>
+
                             <div class="form-group{{ $errors->has('status') ? ' has-danger' : '' }}">
                                 <label class="form-control-label">{{ __('Status') }}</label>
                                 <select name="status" class="form-control">
-                                    <option <?php echo $user->status == 'Active' ? 'selected="selected"' : ''; ?>
-                                        value="Bctive">Active</option>
-                                    <option <?php echo $user->status == 'Blocked' ? 'selected="selected"' : ''; ?>
-                                        value="Blocked">Blocked</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Blocked">Blocked</option>
                                 </select>
 
                                 @if ($errors->has('status'))
@@ -140,8 +138,7 @@
                                 <label class="form-control-label">{{ __('Role') }}</label>
                                 <select name="role" class="form-control">
                                     @foreach ($roles as $key => $role)
-                                    <option value="{{ $key }}" <?=$user->role == $key ? 'selected="selected"' : '';
-                                        ?>>{{ $role }}</option>
+                                    <option value="{{ $key }}">{{ $role }}</option>
                                     @endforeach
                                 </select>
 
@@ -151,7 +148,6 @@
                                 </span>
                                 @endif
                             </div>
-
 
                             <div class="">
                                 <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>
@@ -173,8 +169,8 @@
         $('.view_password > i').mouseout(function(){
             $(this).removeClass('text-primary')
         })
-        $('#input-password-confirmation , #input-password').css('font-family', 'Verdana')
-        $('#input-password-confirmation , #input-password').css('letter-spacing', '0.1ch')
+        $('.input-password-confirmation , .input-password').css('font-family', 'Verdana')
+        $('.input-password-confirmation , .input-password').css('letter-spacing', '0.1ch')
     })
 
 
@@ -182,14 +178,10 @@
     visibilityBtnPassword.addEventListener('click', toggleVisibilityPassword) ;
     function toggleVisibilityPassword() {
         const passwordInput = document.getElementById('input-password');
-        const iconPassword = document.getElementById('iconPassword');
-        
         if(passwordInput.type === "password"){
             passwordInput.type = "text"
-            iconPassword.innerHTML = 'visibility_off'
         }else{
             passwordInput.type = "password"
-            iconPassword.innerHTML = 'visibility'
         }
     }
 
@@ -197,13 +189,10 @@
     visibilityBtnConfirmPassword.addEventListener('click', toggleVisibilityConfirmPassword) ;
     function toggleVisibilityConfirmPassword() {
         const passwordInput = document.getElementById('input-password-confirmation');
-        const iconConfirmPassword = document.getElementById('iconConfirmPassword');
         if(passwordInput.type === "password"){
             passwordInput.type = "text"
-            iconConfirmPassword.innerHTML = 'visibility_off'
         }else{
             passwordInput.type = "password"
-            iconConfirmPassword.innerHTML = 'visibility'
         }
     }
 </script>

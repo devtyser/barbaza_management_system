@@ -34,13 +34,6 @@ Route::get('user/{id}/avatar', function ($id) {
     ));
 });
 
-
-Route::get('incidents/respond/{id}', ['as' => 'incidents/respond/{id}', 'uses' => 'App\Http\Controllers\IncidentsController@respond']);
-
-Route::get('incidents/respond_resident_view/{id}', ['as' => 'incidents/respond_resident_view/{id}', 'uses' => 'App\Http\Controllers\IncidentsController@respond_resident_view']);
-
-Route::get('incidents/responder_respond', ['as' => 'incidents/responder_respond', 'uses' => 'App\Http\Controllers\IncidentsController@responder_respond']);
-
 Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
     Route::get('users', ['as' => 'users', 'uses' => 'App\Http\Controllers\UserController@index']);
@@ -64,6 +57,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('roles', ['as' => 'roles', 'uses' => 'App\Http\Controllers\RoleController@index']);
     Route::resource('role', 'App\Http\Controllers\RoleController');
 
+    //Announcement
+    Route::get('announcements', ['as' => 'announcements', 'uses' => 'App\Http\Controllers\AnnouncementController@index']);
+    Route::resource('announcement', 'App\Http\Controllers\AnnouncementController');
+    
+    //Price Monitoring
+    Route::get('price_monitorings', ['as' => 'price_monitorings', 'uses' => 'App\Http\Controllers\PriceMonitoringController@index']);
+    Route::resource('price_monitoring', 'App\Http\Controllers\PriceMonitoringController');
 
     //Nofication
     Route::get("/admin/notify", function () {
